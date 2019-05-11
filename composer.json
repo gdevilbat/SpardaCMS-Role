@@ -1,0 +1,39 @@
+{
+    "name": "gdevilbat/sparda-cms-role-module",
+    "type": "laravel-module",
+    "description": "",
+    "authors": [
+        {
+            "name": "M.Aldi Nur Ibrahim",
+            "email": "maldinuribrahim@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Gdevilbat\\SpardaCMS\\Modules\\Role\\Providers\\RoleServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Gdevilbat\\SpardaCMS\\Modules\\Role\\": ""
+        },
+        "exclude-from-classmap": [
+            "/preprocessor/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+          "Gdevilbat\\SpardaCMS\\Modules\\Role\\Tests\\": "Tests"
+        }
+    },
+    "archive": {
+        "exclude": ["/Tests", "/preprocessor"]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
