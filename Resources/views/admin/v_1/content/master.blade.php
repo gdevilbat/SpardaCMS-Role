@@ -154,16 +154,14 @@
                                                             <div class="m-form__group form-group">
                                                                 <div class="m-checkbox-list">
                                                                     @foreach($module->scope as $scope)
-                                                                        @if($scope != 'permission')
-                                                                            <label class="m-checkbox">
+                                                                        <label class="m-checkbox">
                                                                                <input type="checkbox" class="checkbox" {{$self->checkRole( $scope, $role->modules, $module->id) ? "checked" : ""}}>
                                                                                 {{$scope}}
                                                                                 <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
                                                                                 <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->id)}}">
                                                                                 <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->id)}}">
                                                                                 <span></span>
-                                                                            </label>
-                                                                        @endif
+                                                                        </label>
                                                                     @endforeach
                                                                 </div>
                                                             </div>

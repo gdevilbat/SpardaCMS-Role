@@ -11,6 +11,6 @@ class RoleUser extends Model
 
     public function role()
     {
-    	return $this->belongsTo("\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role", 'role_id');
+    	return $this->hasOne("\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role", 'id', 'role_id');
     }
 }

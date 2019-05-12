@@ -56,7 +56,16 @@ class AuthServiceProvider extends ServiceProvider
                         $authentication = $value.'-'.$module->slug;
                         Gate::define($authentication, function ($user, $model = null) use ($value, $module, $modules){
 
-                            $scope = $user->hasAccess($value, $user, $module->slug, $modules);
+                            $role_user = RoleUser_m::with(['role.modules' => function($query) use ($module){
+                                                        $query->where('module.id', $module->id);
+                                                    }])
+                                                    ->where('user_id', $user->id)
+                                                    ->first();
+
+                            if(empty($role_user))
+                                abort(403, "User Doesn't Have Role");
+
+                            $scope = $role_user->role->hasAccess($value, $module->slug, $modules);
 
                             if(!empty($model))
                             {
@@ -78,10 +87,11 @@ class AuthServiceProvider extends ServiceProvider
        }
        
        Gate::define('super-access', function ($user){
-            if(empty($user->role))
+            $role_user = RoleUser_m::with('role')->where('user_id', $user->id)->first();
+            if(empty($role_user))
                 abort(403, "User Doesn't Have Role");
 
-            return $user->role->first()->slug == 'super-admin';
+            return $role_user->role->slug == 'super-admin';
        });
     }
 
