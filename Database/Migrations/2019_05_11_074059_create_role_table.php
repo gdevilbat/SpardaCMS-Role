@@ -18,8 +18,13 @@ class CreateRoleTable extends Migration
             $table->string('slug')->unique()->nullable();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->softDeletes();
             $table->timestamps();
+        });
+
+        Schema::table('role', function($table){
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 

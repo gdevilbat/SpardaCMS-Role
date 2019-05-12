@@ -13,6 +13,7 @@ use Gdevilbat\SpardaCMS\Modules\Role\Entities\AccessRole as AccessRole_m;
 use Gdevilbat\SpardaCMS\Modules\Core\Repositories\Repository;
 
 use Validator;
+use Auth;
 
 class RoleController extends CoreController
 {
@@ -48,6 +49,7 @@ class RoleController extends CoreController
         {
             $this->data['role'] = $this->role_repository->find(decrypt($_GET['code']));
             $this->data['method'] = method_field('PUT');
+            $this->authorize('update-role', $this->data['role']);
         }
 
         return view('role::admin.'.$this->data['theme_cms']->value.'.content.form', $this->data);
@@ -92,12 +94,14 @@ class RoleController extends CoreController
         {
             $data = $request->except('_token', '_method', 'id');
             $role = $this->role_repository->findOrFail(decrypt($request->input('id')));
+            $this->authorize('update-role', $role);
         }
 
         foreach ($data as $key => $value) 
         {
             $role->$key = $value;
         }
+        $role->user_id = Auth::id();
 
         if($role->save())
         {
@@ -199,6 +203,8 @@ class RoleController extends CoreController
     public function destroy(Request $request)
     {
         $query = $this->role_m->findOrFail(decrypt($request->input('id')));
+
+        $this->authorize('delete-role', $query);
 
         try {
             if($query->delete())

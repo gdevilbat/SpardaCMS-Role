@@ -60,14 +60,9 @@ class AuthServiceProvider extends ServiceProvider
 
                             if(!empty($model))
                             {
-                                if(is_a($model, 'App\User'))
+                                if(is_a($model, 'Gdevilbat\SpardaCMS\Modules\Core\Entities\User'))
                                 {
                                   $id_user = $model->id;
-
-                                  $roleUser = RoleUser_m::with('role')->where('user_id', $user->id)->first();
-                                  if($roleUser->role->slug == 'super-admin')
-                                    return $scope && ($user->id == $id_user);
-                                  
                                   return $scope || ($user->id == $model->user_id);
                                 }
                                 else
@@ -83,11 +78,10 @@ class AuthServiceProvider extends ServiceProvider
        }
        
        Gate::define('super-access', function ($user){
-            $roleUser = RoleUser_m::with('role')->where('user_id', $user->id)->first();
-            if(empty($roleUser))
+            if(empty($user->role))
                 abort(403, "User Doesn't Have Role");
 
-            return $roleUser->role->slug == 'super-admin';
+            return $user->role->first()->slug == 'super-admin';
        });
     }
 

@@ -65,16 +65,20 @@
                         </div>
                     @endif
 
-                    <div class="row mb-4">
-                        <div class="col-md-5">
-                            <a href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create')}}" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
-                                <span>
-                                    <i class="la la-plus"></i>
-                                    <span>Add New Role</span>
-                                </span>
-                            </a>
+                    @can('create-role')
+
+                        <div class="row mb-4">
+                            <div class="col-md-5">
+                                <a href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create')}}" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+                                    <span>
+                                        <i class="la la-plus"></i>
+                                        <span>Add New Role</span>
+                                    </span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
+
+                    @endcan
 
                     <!--begin: Datatable -->
                     <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@accessScope')}}" method="post" id="form-role">
@@ -93,57 +97,115 @@
                             </thead>
                             <tbody>
                                 @foreach($roles as $role)
-                                    @if($role->name != 'Super Admin')
-                                        <tr>
-                                            <td>{{$loop->iteration}}</td>
-                                            <td style="vertical-align: middle;">{{$role->name}}</td>
-                                            @foreach($modules as $module)
-                                                <td>
-                                                    <div class="m-form__group form-group">
-                                                        <div class="m-checkbox-list">
-                                                            @foreach($module->scope as $scope)
-                                                                <label class="m-checkbox">
-                                                                   <input type="checkbox" class="checkbox" {{$self->checkRole( $scope, $role->modules, $module->id) ? "checked" : ""}}>
-                                                                    {{$scope}}
-                                                                    <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
-                                                                    <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->id)}}">
-                                                                    <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->id)}}">
-                                                                    <span></span>
-                                                                </label>
-                                                            @endforeach
+                                    @if($role->slug == 'super-admin')
+                                        @can('super-access')
+                                            <tr>
+                                                <td>{{$loop->iteration}}</td>
+                                                <td style="vertical-align: middle;">{{$role->name}}</td>
+                                                @foreach($modules as $module)
+                                                    <td>
+                                                        <div class="m-form__group form-group">
+                                                            <div class="m-checkbox-list">
+                                                                @foreach($module->scope as $scope)
+                                                                    @if($scope != 'permission')
+                                                                        <label class="m-checkbox">
+                                                                           <input type="checkbox" class="checkbox" {{$self->checkRole( $scope, $role->modules, $module->id) ? "checked" : ""}}>
+                                                                            {{$scope}}
+                                                                            <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
+                                                                            <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->id)}}">
+                                                                            <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->id)}}">
+                                                                            <span></span>
+                                                                        </label>
+                                                                    @endcan
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                @endforeach
+                                                <td style="vertical-align: middle;">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> Actions
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-left" role="menu">
+                                                            <button class="dropdown-item" type="button">
+                                                                <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->id)}}"><i class="fa fa-edit"> Edit</i></a>
+                                                            </button>
+                                                            <form>
+                                                            </form>
+                                                            <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy')}}" method="post" accept-charset="utf-8">
+                                                                {{method_field('DELETE')}}                                                        
+                                                                {{csrf_field()}}
+                                                                <input type="hidden" name="id" value="{{encrypt($role->id)}}">
+                                                            </form>
+                                                            <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
                                                         </div>
                                                     </div>
                                                 </td>
-                                            @endforeach
-                                            <td style="vertical-align: middle;">
-                                                <div class="btn-group">
-                                                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> Actions
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-left" role="menu">
-                                                        <button class="dropdown-item" type="button">
-                                                            <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->id)}}"><i class="fa fa-edit"> Edit</i></a>
+                                            </tr>
+                                        @endcan
+                                    @else
+                                        @can('read-role', $role)
+                                            <tr>
+                                                <td>{{$loop->iteration}}</td>
+                                                <td style="vertical-align: middle;">{{$role->name}}</td>
+                                                @foreach($modules as $module)
+                                                    <td>
+                                                        @can('permission-'.$module->slug)
+                                                            <div class="m-form__group form-group">
+                                                                <div class="m-checkbox-list">
+                                                                    @foreach($module->scope as $scope)
+                                                                        @if($scope != 'permission')
+                                                                            <label class="m-checkbox">
+                                                                               <input type="checkbox" class="checkbox" {{$self->checkRole( $scope, $role->modules, $module->id) ? "checked" : ""}}>
+                                                                                {{$scope}}
+                                                                                <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
+                                                                                <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->id)}}">
+                                                                                <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->id)}}">
+                                                                                <span></span>
+                                                                            </label>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        @endcan
+                                                    </td>
+                                                @endforeach
+                                                <td style="vertical-align: middle;">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> Actions
                                                         </button>
-                                                        <form>
-                                                        </form>
-                                                        <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy')}}" method="post" accept-charset="utf-8">
-                                                            {{method_field('DELETE')}}                                                        
-                                                            {{csrf_field()}}
-                                                            <input type="hidden" name="id" value="{{encrypt($role->id)}}">
-                                                        </form>
-                                                        <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
+                                                        <div class="dropdown-menu dropdown-menu-left" role="menu">
+                                                            @can('update-role', $role)
+                                                                <button class="dropdown-item" type="button">
+                                                                    <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->id)}}"><i class="fa fa-edit"> Edit</i></a>
+                                                                </button>
+                                                            @endcan
+                                                            <form>
+                                                            </form>
+                                                            @can('delete-role', $role)
+                                                                <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy')}}" method="post" accept-charset="utf-8">
+                                                                    {{method_field('DELETE')}}                                                        
+                                                                    {{csrf_field()}}
+                                                                    <input type="hidden" name="id" value="{{encrypt($role->id)}}">
+                                                                </form>
+                                                                <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
+                                                            @endcan
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        @endcan
                                     @endif
                                 @endforeach
                             </tbody>
                         </table>
                         {{method_field('POST')}}
                         {{csrf_field()}}
-                        <div class="col-md-12 d-flex justify-content-end">
-                            <button id="submit-role" type="button" class="btn btn-info m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">Submit</button>
-                        </div>
+                        @can('create-role')
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button id="submit-role" type="button" class="btn btn-info m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">Submit</button>
+                            </div>
+                        @endcan
                     </form>
 
                     <!--end: Datatable -->
