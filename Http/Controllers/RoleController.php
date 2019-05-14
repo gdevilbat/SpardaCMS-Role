@@ -88,7 +88,7 @@ class RoleController extends CoreController
         if($request->isMethod('POST'))
         {
             $data = $request->except('_token', '_method');
-            $role = $this->role_m;
+            $role = new $this->role_m;
         }
         else
         {
