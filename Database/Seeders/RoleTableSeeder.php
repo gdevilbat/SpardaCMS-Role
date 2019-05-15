@@ -5,7 +5,9 @@ namespace Gdevilbat\SpardaCMS\Modules\Role\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class RoleDatabaseSeeder extends Seeder
+use DB;
+
+class RoleTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +18,12 @@ class RoleDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call("OthersTableSeeder");
-         $this->call(RoleTableSeeder::class);
+        DB::table('role')->insert([
+            [
+                'name' => 'Super Admin',
+                'slug' => 'super-admin',
+                'user_id' => 1
+            ],
+        ]);
     }
 }
