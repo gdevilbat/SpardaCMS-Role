@@ -72,11 +72,11 @@ class AuthServiceProvider extends ServiceProvider
                                 if(is_a($model, 'Gdevilbat\SpardaCMS\Modules\Core\Entities\User'))
                                 {
                                   $id_user = $model->id;
-                                  return $scope || ($user->id == $model->user_id);
+                                  return $scope || ($user->id == $id_user);
                                 }
                                 else
                                 {
-                                  return $scope || ($user->id == $model->user_id);
+                                  return $scope || ($user->id == $model->created_by);
                                 }
                             }
 

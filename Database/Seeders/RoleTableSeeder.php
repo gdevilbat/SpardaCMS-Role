@@ -22,7 +22,8 @@ class RoleTableSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'slug' => 'super-admin',
-                'user_id' => 1
+                'created_by' => 1,
+                'modified_by' => 1,
             ],
         ]);
     }

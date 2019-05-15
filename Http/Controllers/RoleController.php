@@ -101,7 +101,16 @@ class RoleController extends CoreController
         {
             $role->$key = $value;
         }
-        $role->user_id = Auth::id();
+
+        if($request->isMethod('POST'))
+        {
+            $role->created_by = Auth::id();
+            $role->modified_by = Auth::id();
+        }
+        else
+        {
+            $role->modified_by = Auth::id();
+        }
 
         if($role->save())
         {
