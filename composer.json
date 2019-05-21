@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "sparda-cms-core-module": "^5.7",
+        "sparda-cms-core-module": "^5.7"
     },
     "extra": {
         "laravel": {
