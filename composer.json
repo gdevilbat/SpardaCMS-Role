@@ -11,6 +11,12 @@
     "require": {
         "sparda-cms-core-module": "^5.7"
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://gitlab.com/maldinuribrahim/spardacms-core"
+        }
+    ],
     "extra": {
         "laravel": {
             "providers": [
