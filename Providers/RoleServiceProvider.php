@@ -63,7 +63,7 @@ class RoleServiceProvider extends ServiceProvider
     {
         $viewPath = resource_path('views/modules/role');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__.'/../resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -86,7 +86,7 @@ class RoleServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'role');
         } else {
-            $this->loadTranslationsFrom(__DIR__ .'/../Resources/lang', 'role');
+            $this->loadTranslationsFrom(__DIR__ .'/../resources/lang', 'role');
         }
     }
 
