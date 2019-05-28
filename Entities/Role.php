@@ -52,11 +52,12 @@ class Role extends Model
         }
 
         try {
+            if(empty($this->modules->first()))
+                return false;
+
             $scope = json_decode($this->modules->first()->pivot->access_scope);
             if(!(property_exists($scope, $permission)))
-            {
                 return false;
-            }
 
             return json_decode($scope->$permission) ? true : false;
         } catch (\Exception $e) {
