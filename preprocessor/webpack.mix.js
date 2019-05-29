@@ -11,12 +11,6 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('js/dashboard.js', '../../resources/views/admin/v_1/public/js/base.js').options({
+mix.js('js/role.js', '../../resources/views/admin/v_1/js/role.js').options({
       processCssUrls: false
-   }).copy('../resources/views/admin/v_1/js/base.js', '../resources/views/admin/v_2/js/base.js')
-   .less('less/v_1/dashboard.less', '../../resources/views/admin/v_1/public/css/base.css').options({
-      processCssUrls: false
-   })
-   .less('less/v_2/dashboard.less', '../../resources/views/admin/v_2/public/css/base.css').options({
-      processCssUrls: false
-   });
+})

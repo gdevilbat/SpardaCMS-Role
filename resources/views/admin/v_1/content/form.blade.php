@@ -1,4 +1,4 @@
-@extends('core::admin.'.$theme_cms->value.'.template')
+@extends('core::admin.'.$theme_cms->value.'.templates.parent')
 
 @section('title_dashboard', 'Role')
 
@@ -73,7 +73,7 @@
                     </div>
                     <div class="form-group m-form__group d-flex">
                         <div class="col-md-4 d-flex justify-content-end py-3">
-                            <label for="exampleInputEmail1">Role Slug</label>
+                            <label for="exampleInputEmail1">Role Slug<span class="ml-1 m--font-danger" aria-required="true">*</span></label>
                         </div>
                         <div class="col-md-8">
                             <input type="text" class="form-control m-input" name="slug" placeholder="Role slug" id="slug" value="{{old('slug') ? old('slug') : (!empty($role) ? $role->slug : '')}}">
