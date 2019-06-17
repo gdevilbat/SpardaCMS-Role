@@ -57,7 +57,7 @@ class AuthServiceProvider extends ServiceProvider
                         Gate::define($authentication, function ($user, $model = null) use ($value, $module, $modules){
 
                             $role_user = RoleUser_m::with(['role.modules' => function($query) use ($module){
-                                                        $query->where('module.id', $module->id);
+                                                        $query->where(Module_m::getTableName().'.'.Module_m::getPrimaryKey(), $module->id);
                                                     }])
                                                     ->where('user_id', $user->id)
                                                     ->first();
