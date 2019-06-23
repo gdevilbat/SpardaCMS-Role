@@ -28,6 +28,16 @@ class Role extends Model
         return $this->belongsToMany('\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module', 'access_roles', 'role_id', 'module_id')->withPivot(['access_scope']);
     }
 
+    public static function getTableName()
+    {
+        return with(new Static)->getTable();
+    }
+
+    public static function getPrimaryKey()
+    {
+        return with(new Static)->getKeyName();
+    }
+
     public function hasAccess( $permission, $module_slug, $modules)
     {
         if(empty($module_slug))

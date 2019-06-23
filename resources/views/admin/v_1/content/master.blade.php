@@ -124,8 +124,8 @@
                                                 @endforeach
                                                 <td style="vertical-align: middle;">
                                                     <div class="btn-group">
-                                                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> Actions
-                                                        </button>
+                                                        <a class="btn btn-outline-primary dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-expanded="false"> Actions
+                                                        </a>
                                                         <div class="dropdown-menu dropdown-menu-left" role="menu">
                                                             <button class="dropdown-item" type="button">
                                                                 <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->id)}}"><i class="fa fa-edit"> Edit</i></a>
@@ -170,8 +170,8 @@
                                                 @endforeach
                                                 <td style="vertical-align: middle;">
                                                     <div class="btn-group">
-                                                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> Actions
-                                                        </button>
+                                                        <a class="btn btn-outline-primary dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-expanded="false"> Actions
+                                                        </a>
                                                         <div class="dropdown-menu dropdown-menu-left" role="menu">
                                                             @can('update-role', $role)
                                                                 <button class="dropdown-item" type="button">

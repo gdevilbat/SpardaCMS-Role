@@ -19,5 +19,6 @@ class RoleDatabaseSeeder extends Seeder
         // $this->call("OthersTableSeeder");
          $this->call(RoleTableSeeder::class);
          $this->call(RoleUsersTableSeeder::class);
+         $this->call(RoleModuleTableSeeder::class);
     }
 }

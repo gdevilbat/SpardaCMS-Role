@@ -10,5 +10,15 @@ class AccessRole extends Model
     protected $table= 'access_roles';
     protected $casts = [
         'access_scope' => 'array',
-    ]; 
+    ];
+
+    public static function getTableName()
+    {
+        return with(new Static)->getTable();
+    }
+
+    public static function getPrimaryKey()
+    {
+        return with(new Static)->getKeyName();
+    }
 }
