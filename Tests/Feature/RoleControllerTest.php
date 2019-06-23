@@ -115,16 +115,18 @@ class RoleControllerTest extends TestCase
 
         $user = \App\User::find(1);
 
-        $module = \Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::latest()->first();
+        $role = \Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::latest()->first();
 
         $response = $this->actingAs($user)
 				        ->from(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@index'))
 				        ->post(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy'), [
-				        	$module->getKeyName() => encrypt($module->getKey()),
+				        	$role->getKeyName() => encrypt($role->getKey()),
 							'_method' => 'DELETE'
 				    	])
 				    	->assertStatus(302)
 						->assertRedirect(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@index'))
 						->assertSessionHas('global_message.status', 200);
+
+        $this->assertDatabaseMissing(\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getTableName(), [$role->getKeyName() => $role->getKey()]);
     }
 }
