@@ -125,20 +125,14 @@ class RoleTest extends DuskTestCase
 
             $browser->press('Submit')
                     ->waitForText('Successfully To Update Role Provider!')
-                    ->assertSee('Successfully To Update Role Provider!');
+                    ->assertSee('Successfully To Update Role Provider!')
+                    ->waitForText('Actions');
+
+            $browser->assertValue('td:nth-child(3) > div > div > label:nth-child(1) > input.checkbox', "on")
+                    ->assertValue('td:nth-child(3) > div > div > label:nth-child(2) > input.checkbox', "on")
+                    ->assertValue('td:nth-child(3) > div > div > label:nth-child(3) > input.checkbox', "on")
+                    ->assertValue('td:nth-child(3) > div > div > label:nth-child(4) > input.checkbox', "on")
+                    ->assertValue('td:nth-child(3) > div > div > label:nth-child(5) > input.checkbox', "on");
         });
-
-        $module = \Gdevilbat\SpardaCMS\Modules\Core\Entities\Module::where('slug', 'role')->first();
-
-        $this->assertDatabaseHas(\Gdevilbat\SpardaCMS\Modules\Role\Entities\AccessRole::getTableName(), [
-            'module_id' => $module->getKey(),
-            'access_scope' => json_encode([
-                'menu' => 'true',
-                'create' => 'true',
-                'read' => 'true',
-                'update' => 'true',
-                'delete' => 'true',
-            ]),
-        ]);
     }
 }

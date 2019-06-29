@@ -11,6 +11,7 @@ class Role extends Model
 {
     protected $fillable = [];
     protected $table = 'role';
+    protected $primaryKey = 'id_role';
 
     /**
      * Set the user's Slug.

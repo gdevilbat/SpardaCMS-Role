@@ -109,11 +109,11 @@
                                                                 @foreach($module->scope as $scope)
                                                                     @if($scope != 'permission')
                                                                         <label class="m-checkbox">
-                                                                           <input type="checkbox" class="checkbox" {{Route::current()->getController()->checkRole( $scope, $role->modules, $module->id) ? "checked" : ""}}>
+                                                                           <input type="checkbox" class="checkbox" {{Route::current()->getController()->checkRole( $scope, $role->modules, $module->getKey()) ? "checked" : ""}}>
                                                                             {{$scope}}
                                                                             <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
-                                                                            <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->id)}}">
-                                                                            <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->id)}}">
+                                                                            <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->getKey())}}">
+                                                                            <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->getKey())}}">
                                                                             <span></span>
                                                                         </label>
                                                                     @endcan
@@ -128,14 +128,14 @@
                                                         </a>
                                                         <div class="dropdown-menu dropdown-menu-left" role="menu">
                                                             <button class="dropdown-item" type="button">
-                                                                <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->id)}}"><i class="fa fa-edit"> Edit</i></a>
+                                                                <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->getKey())}}"><i class="fa fa-edit"> Edit</i></a>
                                                             </button>
                                                             <form>
                                                             </form>
                                                             <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy')}}" method="post" accept-charset="utf-8">
                                                                 {{method_field('DELETE')}}                                                        
                                                                 {{csrf_field()}}
-                                                                <input type="hidden" name="id" value="{{encrypt($role->id)}}">
+                                                                <input type="hidden" name="{{\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey()}}" value="{{encrypt($role->getKey())}}">
                                                             </form>
                                                             <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
                                                         </div>
@@ -155,11 +155,11 @@
                                                                 <div class="m-checkbox-list">
                                                                     @foreach($module->scope as $scope)
                                                                         <label class="m-checkbox">
-                                                                               <input type="checkbox" class="checkbox" {{Route::current()->getController()->checkRole( $scope, $role->modules, $module->id) ? "checked" : ""}}>
+                                                                               <input type="checkbox" class="checkbox" {{Route::current()->getController()->checkRole( $scope, $role->modules, $module->getKey()) ? "checked" : ""}}>
                                                                                 {{$scope}}
                                                                                 <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
-                                                                                <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->id)}}">
-                                                                                <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->id)}}">
+                                                                                <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->getKey())}}">
+                                                                                <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->getKey())}}">
                                                                                 <span></span>
                                                                         </label>
                                                                     @endforeach
@@ -175,7 +175,7 @@
                                                         <div class="dropdown-menu dropdown-menu-left" role="menu">
                                                             @can('update-role', $role)
                                                                 <button class="dropdown-item" type="button">
-                                                                    <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->id)}}"><i class="fa fa-edit"> Edit</i></a>
+                                                                    <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->getKey())}}"><i class="fa fa-edit"> Edit</i></a>
                                                                 </button>
                                                             @endcan
                                                             <form>
@@ -184,7 +184,7 @@
                                                                 <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy')}}" method="post" accept-charset="utf-8">
                                                                     {{method_field('DELETE')}}                                                        
                                                                     {{csrf_field()}}
-                                                                    <input type="hidden" name="id" value="{{encrypt($role->id)}}">
+                                                                    <input type="hidden" name="{{\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey()}}" value="{{encrypt($role->getKey())}}">
                                                                 </form>
                                                                 <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
                                                             @endcan

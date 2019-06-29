@@ -8,6 +8,7 @@ class AccessRole extends Model
 {
     protected $fillable = [];
     protected $table= 'access_roles';
+    protected $primaryKey = 'id_access_roles';
     protected $casts = [
         'access_scope' => 'array',
     ];

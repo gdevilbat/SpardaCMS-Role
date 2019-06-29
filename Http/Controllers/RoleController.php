@@ -75,7 +75,7 @@ class RoleController extends CoreController
         else
         {
             $validator->addRules([
-                'slug' => 'max:191|unique:'.$this->role_m->getTable().',slug,'.decrypt($request->input('id')).',id'
+                'slug' => 'max:191|unique:'.$this->role_m->getTable().',slug,'.decrypt($request->input(\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey())).','.\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey()
             ]);
         }
 
@@ -92,8 +92,8 @@ class RoleController extends CoreController
         }
         else
         {
-            $data = $request->except('_token', '_method', 'id');
-            $role = $this->role_repository->findOrFail(decrypt($request->input('id')));
+            $data = $request->except('_token', '_method', \Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey());
+            $role = $this->role_repository->findOrFail(decrypt($request->input(\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey())));
             $this->authorize('update-role', $role);
         }
 
@@ -163,7 +163,7 @@ class RoleController extends CoreController
 
     public function checkRole($scope ,$modules, $id)
     {
-        $modules = $modules->where('id', $id);
+        $modules = $modules->where(\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module::getPrimaryKey(), $id);
         foreach ($modules as $module) 
         {
             if(!array_key_exists($scope, json_decode($module->pivot->access_scope)))
@@ -211,7 +211,7 @@ class RoleController extends CoreController
      */
     public function destroy(Request $request)
     {
-        $query = $this->role_m->findOrFail(decrypt($request->input('id')));
+        $query = $this->role_m->findOrFail(decrypt($request->input(\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey())));
 
         $this->authorize('delete-role', $query);
 
