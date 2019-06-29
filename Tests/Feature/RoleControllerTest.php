@@ -87,14 +87,14 @@ class RoleControllerTest extends TestCase
 
 
         $user = \App\User::find(1);
-        $module = \Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::latest()->first();
+        $role = \Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::latest()->first();
 
         $response = $this->actingAs($user)
-				        ->from(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($module->getKey()))
+				        ->from(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->getKey()))
 				        ->post(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@store'), [
-				        	$module->getKeyName() => encrypt($module->getKey()),
-				        	'name' => $module->name,
-				        	'slug' => $module->slug,
+				        	$role->getKeyName() => encrypt($role->getKey()),
+				        	'name' => $role->name,
+				        	'slug' => $role->slug,
 							'_method' => 'PUT'
 				    	])
 				    	->assertStatus(302)
