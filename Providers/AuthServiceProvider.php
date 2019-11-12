@@ -69,7 +69,10 @@ class AuthServiceProvider extends ServiceProvider
 
                             if(!empty($model))
                             {
-                                return $scope || ($user->id == $model->created_by);
+                                if($value == 'read')
+                                {
+                                    return $scope || ($user->id == $model->created_by);
+                                }
                             }
 
                             return $scope;
