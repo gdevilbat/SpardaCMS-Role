@@ -82,121 +82,79 @@
 
                     <!--begin: Datatable -->
                     <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@accessScope')}}" method="post" id="form-role">
-                        <table class="table table-striped" id="html_table" width="100%">
-                            <thead>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="html_table" width="100%">
                                 <thead>
-                                    <tr>
-                                        <th style="width: 10px">No.</th>
-                                        <th>Role Name</th>
-                                        @foreach($modules as $module)
-                                            <th><center>{{title_case($module->slug)}}</center></th>
-                                        @endforeach
-                                        <th style="width: 50px; vertical-align: middle;">Action</th>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px">No.</th>
+                                            <th>Role Name</th>
+                                            @foreach($modules as $module)
+                                                <th><center>{{title_case($module->slug)}}</center></th>
+                                            @endforeach
+                                            <th style="width: 50px; vertical-align: middle;">Action</th>
+                                        </tr>
+                                    </thead>
                                 </thead>
-                            </thead>
-                            <tbody>
-                                @foreach($roles as $role)
-                                    @if($role->slug == 'super-admin')
-                                        @can('super-access')
-                                            <tr>
-                                                <td>{{$loop->iteration}}</td>
-                                                <td style="vertical-align: middle;">{{$role->name}}</td>
-                                                @foreach($modules as $module)
-                                                    <td>
-                                                        <div class="m-form__group form-group">
-                                                            <div class="m-checkbox-list">
-                                                                @foreach($module->scope as $scope)
-                                                                    @if($scope != 'permission')
-                                                                        <label class="m-checkbox">
-                                                                           <input type="checkbox" class="checkbox" {{Route::current()->getController()->checkRole( $scope, $role->modules, $module->getKey()) ? "checked" : ""}}>
-                                                                            {{$scope}}
-                                                                            <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
-                                                                            <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->getKey())}}">
-                                                                            <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->getKey())}}">
-                                                                            <span></span>
-                                                                        </label>
+                                <tbody>
+                                    @foreach($roles as $role)
+                                        @if($role->slug != 'super-admin')
+                                            @if(Auth::user()->role->first()->slug != $role->slug)
+                                                @can('read-role', $role)
+                                                    <tr>
+                                                        <td>{{$loop->iteration}}</td>
+                                                        <td style="vertical-align: middle;">{{$role->name}}</td>
+                                                        @foreach($modules as $module)
+                                                            <td>
+                                                                @can('permission-'.$module->slug)
+                                                                    <div class="m-form__group form-group">
+                                                                        <div class="m-checkbox-list">
+                                                                            @foreach($module->scope as $scope)
+                                                                                <label class="m-checkbox">
+                                                                                       <input type="checkbox" class="checkbox" {{Route::current()->getController()->checkRole( $scope, $role->modules, $module->getKey()) ? "checked" : ""}}>
+                                                                                        {{$scope}}
+                                                                                        <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
+                                                                                        <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->getKey())}}">
+                                                                                        <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->getKey())}}">
+                                                                                        <span></span>
+                                                                                </label>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    </div>
+                                                                @endcan
+                                                            </td>
+                                                        @endforeach
+                                                        <td style="vertical-align: middle;">
+                                                            <div class="btn-group">
+                                                                <a class="btn btn-outline-primary dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-expanded="false"> Actions
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-left" role="menu">
+                                                                    @can('update-role', $role)
+                                                                        <button class="dropdown-item" type="button">
+                                                                            <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->getKey())}}"><i class="fa fa-edit"> Edit</i></a>
+                                                                        </button>
                                                                     @endcan
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                @endforeach
-                                                <td style="vertical-align: middle;">
-                                                    <div class="btn-group">
-                                                        <a class="btn btn-outline-primary dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-expanded="false"> Actions
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-left" role="menu">
-                                                            <button class="dropdown-item" type="button">
-                                                                <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->getKey())}}"><i class="fa fa-edit"> Edit</i></a>
-                                                            </button>
-                                                            <form>
-                                                            </form>
-                                                            <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy')}}" method="post" accept-charset="utf-8">
-                                                                {{method_field('DELETE')}}                                                        
-                                                                {{csrf_field()}}
-                                                                <input type="hidden" name="{{\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey()}}" value="{{encrypt($role->getKey())}}">
-                                                            </form>
-                                                            <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endcan
-                                    @else
-                                        @can('read-role', $role)
-                                            <tr>
-                                                <td>{{$loop->iteration}}</td>
-                                                <td style="vertical-align: middle;">{{$role->name}}</td>
-                                                @foreach($modules as $module)
-                                                    <td>
-                                                        @can('permission-'.$module->slug)
-                                                            <div class="m-form__group form-group">
-                                                                <div class="m-checkbox-list">
-                                                                    @foreach($module->scope as $scope)
-                                                                        <label class="m-checkbox">
-                                                                               <input type="checkbox" class="checkbox" {{Route::current()->getController()->checkRole( $scope, $role->modules, $module->getKey()) ? "checked" : ""}}>
-                                                                                {{$scope}}
-                                                                                <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
-                                                                                <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->getKey())}}">
-                                                                                <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->getKey())}}">
-                                                                                <span></span>
-                                                                        </label>
-                                                                    @endforeach
+                                                                    <form>
+                                                                    </form>
+                                                                    @can('delete-role', $role)
+                                                                        <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy')}}" method="post" accept-charset="utf-8">
+                                                                            {{method_field('DELETE')}}                                                        
+                                                                            {{csrf_field()}}
+                                                                            <input type="hidden" name="{{\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey()}}" value="{{encrypt($role->getKey())}}">
+                                                                        </form>
+                                                                        <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
+                                                                    @endcan
                                                                 </div>
                                                             </div>
-                                                        @endcan
-                                                    </td>
-                                                @endforeach
-                                                <td style="vertical-align: middle;">
-                                                    <div class="btn-group">
-                                                        <a class="btn btn-outline-primary dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-expanded="false"> Actions
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-left" role="menu">
-                                                            @can('update-role', $role)
-                                                                <button class="dropdown-item" type="button">
-                                                                    <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->getKey())}}"><i class="fa fa-edit"> Edit</i></a>
-                                                                </button>
-                                                            @endcan
-                                                            <form>
-                                                            </form>
-                                                            @can('delete-role', $role)
-                                                                <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy')}}" method="post" accept-charset="utf-8">
-                                                                    {{method_field('DELETE')}}                                                        
-                                                                    {{csrf_field()}}
-                                                                    <input type="hidden" name="{{\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey()}}" value="{{encrypt($role->getKey())}}">
-                                                                </form>
-                                                                <button class="dropdown-item confirm-delete" type="button"><a class="m-link m-link--state m-link--accent" data-toggle="modal" href="#small"><i class="fa fa-trash"> Delete</i></a></button>
-                                                            @endcan
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endcan
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
+                                                        </td>
+                                                    </tr>
+                                                @endcan
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         {{method_field('POST')}}
                         {{csrf_field()}}
                         @can('create-role')
