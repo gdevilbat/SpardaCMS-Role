@@ -138,6 +138,10 @@ class RoleController extends CoreController
 
     public function accessScope(Request $request)
     {
+        $this->validate($request, [
+                'access' => 'required'
+        ]);
+
         $input = $request->input('access');
 
         foreach ($input as $role_user) 
