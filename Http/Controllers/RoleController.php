@@ -116,11 +116,11 @@ class RoleController extends CoreController
         {
             if($request->isMethod('POST'))
             {
-                return redirect(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@index'))->with('global_message', array('status' => 200,'message' => 'Successfully Add Role!'));
+                return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Successfully Add Role!'));
             }
             else
             {
-                return redirect(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@index'))->with('global_message', array('status' => 200,'message' => 'Successfully Update Role!'));
+                return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Successfully Update Role!'));
             }
         }
         else
@@ -157,12 +157,12 @@ class RoleController extends CoreController
                 $role->access_scope = $value['access_scope'];
                 if(!$role->save())
                 {
-                    return redirect()->back()->with('global_message', array('status' => 400, 'message' => 'Failed To Update Role Provider!'));
+                    return redirect(route('cms.role.master'))->with('global_message', array('status' => 400, 'message' => 'Failed To Update Role Provider!'));
                 }
             }
         }
 
-        return redirect()->back()->with('global_message', array('status' => 200, 'message' => 'Successfully To Update Role Provider!'));
+        return redirect(route('cms.role.master'))->with('global_message', array('status' => 200, 'message' => 'Successfully To Update Role Provider!'));
     }
 
     public function checkRole($scope ,$modules, $id)
@@ -222,11 +222,11 @@ class RoleController extends CoreController
         try {
             if($query->delete())
             {
-                return redirect()->back()->with('global_message', array('status' => 200,'message' => 'Successfully Delete Role!'));
+                return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Successfully Delete Role!'));
             }
             
         } catch (\Exception $e) {
-            return redirect()->back()->with('global_message', array('status' => 200,'message' => 'Failed Delete Role, It\'s Has Been Used!'));
+            return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Failed Delete Role, It\'s Has Been Used!'));
         }
     }
 }

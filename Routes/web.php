@@ -20,12 +20,12 @@ Route::group(['prefix' => 'control', 'middleware' => 'core.menu'], function() {
 	        =            Account CMS            =
 	        =============================================*/
 	        
-			    Route::get('master', 'RoleController@index')->middleware('can:menu-role')->name('role');
-			    Route::get('form', 'RoleController@create')->name('role');
-			    Route::post('form', 'RoleController@store')->middleware('can:create-role')->name('role');
-			    Route::put('form', 'RoleController@store')->name('role');
-			    Route::post('role-scope', 'RoleController@accessScope')->middleware('can:create-role')->name('role');
-			    Route::delete('destroy', 'RoleController@destroy')->name('role');
+			    Route::get('master', 'RoleController@index')->middleware('can:menu-role')->name('cms.role.master');
+			    Route::get('form', 'RoleController@create')->name('cms.role.create');
+			    Route::post('form', 'RoleController@store')->middleware('can:create-role')->name('cms.role.store');
+			    Route::put('form', 'RoleController@store')->name('cms.role.store');
+			    Route::post('role-scope', 'RoleController@accessScope')->middleware('can:create-role')->name('cms.role-scope.store');
+			    Route::delete('destroy', 'RoleController@destroy')->name('cms.role.delete');
 	        
 	        /*=====  End of Account CMS  ======*/
 		});

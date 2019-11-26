@@ -69,7 +69,7 @@
 
                         <div class="row mb-4">
                             <div class="col-md-5">
-                                <a href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create')}}" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
+                                <a href="{{route('cms.role.create')}}" class="btn btn-brand m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air">
                                     <span>
                                         <i class="la la-plus"></i>
                                         <span>Add New Role</span>
@@ -81,7 +81,7 @@
                     @endcan
 
                     <!--begin: Datatable -->
-                    <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@accessScope')}}" method="post" id="form-role">
+                    <form action="{{route('cms.role-scope.store')}}" method="post" id="form-role">
                         <div class="table-responsive">
                             <table class="table table-striped" id="html_table" width="100%">
                                 <thead>
@@ -131,13 +131,13 @@
                                                                 <div class="dropdown-menu dropdown-menu-left" role="menu">
                                                                     @can('update-role', $role)
                                                                         <button class="dropdown-item" type="button">
-                                                                            <a class="m-link m-link--state m-link--info" href="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create').'?code='.encrypt($role->getKey())}}"><i class="fa fa-edit"> Edit</i></a>
+                                                                            <a class="m-link m-link--state m-link--info" href="{{route('cms.role.create').'?code='.encrypt($role->getKey())}}"><i class="fa fa-edit"> Edit</i></a>
                                                                         </button>
                                                                     @endcan
                                                                     <form>
                                                                     </form>
                                                                     @can('delete-role', $role)
-                                                                        <form action="{{action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@destroy')}}" method="post" accept-charset="utf-8">
+                                                                        <form action="{{route('cms.role.delete')}}" method="post" accept-charset="utf-8">
                                                                             {{method_field('DELETE')}}                                                        
                                                                             {{csrf_field()}}
                                                                             <input type="hidden" name="{{\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::getPrimaryKey()}}" value="{{encrypt($role->getKey())}}">
