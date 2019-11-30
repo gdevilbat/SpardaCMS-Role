@@ -99,7 +99,7 @@
                                 <tbody>
                                     @foreach($roles as $role)
                                         @if($role->slug != 'super-admin')
-                                            @if(Auth::user()->role->first()->slug != $role->slug)
+                                            @if(!empty(Auth::user()->role) && Auth::user()->role->first()->slug != $role->slug)
                                                 @can('read-role', $role)
                                                     <tr>
                                                         <td>{{$loop->iteration}}</td>
