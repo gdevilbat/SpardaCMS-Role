@@ -25,6 +25,12 @@ class RoleTableSeeder extends Seeder
                 'created_by' => 1,
                 'modified_by' => 1,
             ],
+            [
+                'name' => 'Public',
+                'slug' => 'public',
+                'created_by' => 1,
+                'modified_by' => 1,
+            ],
         ]);
     }
 }
