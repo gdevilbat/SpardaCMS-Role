@@ -69,10 +69,8 @@ class AuthServiceProvider extends ServiceProvider
 
                             if(!empty($model))
                             {
-                                if($value == 'read')
-                                {
+                            	if(!in_array($value, config('role.exclude_permission_id')))
                                     return $scope || ($user->id == $model->created_by);
-                                }
                             }
 
                             return $scope;

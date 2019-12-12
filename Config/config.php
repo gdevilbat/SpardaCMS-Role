@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'name' => 'Role'
+    'name' => 'Role',
+    'exclude_permission_id' => []
 ];
