@@ -2,8 +2,12 @@
 
 namespace Gdevilbat\SpardaCMS\Modules\Role\Repositories;
 
+use Illuminate\Support\Facades\Schema;;
+
 use Gdevilbat\SpardaCMS\Modules\Role\Entities\RoleUser as RoleUser_m;
 use Gdevilbat\SpardaCMS\Modules\Core\Entities\Module as Module_m;
+
+use Auth;
 
 /**
  * Class EloquentCoreRepository
@@ -33,4 +37,18 @@ class SingleBrandAuthentication implements \Gdevilbat\SpardaCMS\Modules\Role\Rep
 
 	    return $scope;
 	}
+
+	public function getDataByCreatedUser(\Illuminate\Database\Eloquent\Builder $builder, \Illuminate\Database\Eloquent\Model $model): \Illuminate\Database\Eloquent\Builder
+    {
+    	if (Schema::hasColumn($model->getTableName(), 'created_by'))
+        {
+	    	$query = $builder->where($model->getTableName().'.created_by', Auth::id());
+        }
+        else
+        {
+	    	$query = $builder->whereRaw(0);
+        }
+
+    	return $query;
+    }
 }
