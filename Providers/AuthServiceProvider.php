@@ -42,6 +42,13 @@ class AuthServiceProvider extends ServiceProvider
 
     public function registerAllModule()
     {
+        $acl =  config('role.aclRepository');
+        $acl = new $acl;
+
+        if(!($acl instanceof \Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository))
+            throw new \Exception("Access Control Repository Mus Instance Of \Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository");
+            
+
         if(!Schema::hasTable('module'))
             return true;
 
@@ -54,26 +61,8 @@ class AuthServiceProvider extends ServiceProvider
                    foreach ($module->scope as $key => $value) 
                    {
                         $authentication = $value.'-'.$module->slug;
-                        Gate::define($authentication, function ($user, $model = null) use ($value, $module, $modules){
-
-                            $role_user = RoleUser_m::with(['role.modules' => function($query) use ($module){
-                                                        $query->where(Module_m::getTableName().'.'.Module_m::getPrimaryKey(), $module->getKey());
-                                                    }])
-                                                    ->where('user_id', $user->id)
-                                                    ->first();
-
-                            if(empty($role_user))
-                                abort(403, "User Doesn't Have Role");
-
-                            $scope = $role_user->role->hasAccess($value, $module->slug, $modules);
-
-                            if(!empty($model))
-                            {
-                            	if(!in_array($value, config('role.exclude_permission_id')))
-                                    return $scope || ($user->id == $model->created_by);
-                            }
-
-                            return $scope;
+                        Gate::define($authentication, function ($user, $model = null) use ($value, $module, $modules, $acl){
+                            return $acl->getAuthenticationRule($value, $module, $modules, $model, $user);
                         });
                    }
             }
