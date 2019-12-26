@@ -21,11 +21,11 @@ class RoleController extends CoreController
     {
         parent::__construct();
         $this->role_m = new Role_m;
-        $this->role_repository = new Repository(new Role_m);
+        $this->role_repository = new Repository(new Role_m, resolve(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class));
         $this->module_m = new Module_m;
-        $this->module_repository = new Repository(new Module_m);
+        $this->module_repository = new Repository(new Module_m, resolve(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class));
         $this->access_role_m = new AccessRole_m;
-        $this->access_role_repository = new Repository(new AccessRole_m);
+        $this->access_role_repository = new Repository(new AccessRole_m, resolve(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class));
     }
     /**
      * Display a listing of the resource.
