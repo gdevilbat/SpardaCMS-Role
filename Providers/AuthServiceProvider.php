@@ -42,12 +42,7 @@ class AuthServiceProvider extends ServiceProvider
 
     public function registerAllModule()
     {
-        $acl =  config('role.aclRepository');
-        $acl = new $acl;
-
-        if(!($acl instanceof \Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository))
-            throw new \Exception("Access Control Repository Mus Instance Of \Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository");
-            
+        $acl = resolve(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class);
 
         if(!Schema::hasTable('module'))
             return true;
