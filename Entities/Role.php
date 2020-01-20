@@ -13,6 +13,8 @@ class Role extends Model
     protected $table = 'role';
     protected $primaryKey = 'id_role';
 
+    const FOREIGN_KEY = 'role_id';
+
     /**
      * Set the user's Slug.
      *
@@ -26,7 +28,7 @@ class Role extends Model
 
     public function modules()
     {
-        return $this->belongsToMany('\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module', 'access_roles', 'role_id', 'module_id')->withPivot(['access_scope']);
+        return $this->belongsToMany('\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module', 'access_roles', SELF::FOREIGN_KEY, \Gdevilbat\SpardaCMS\Modules\Core\Entities\Module::FOREIGN_KEY)->withPivot(['access_scope']);
     }
 
     public static function getTableName()

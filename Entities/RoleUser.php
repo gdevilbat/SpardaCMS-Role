@@ -8,10 +8,10 @@ class RoleUser extends Model
 {
     protected $fillable = [];
     protected $table = 'role_users';
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = \Gdevilbat\SpardaCMS\Modules\Core\Entities\User::FOREIGN_KEY;
 
     public function role()
     {
-    	return $this->belongsTo("\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role", 'role_id');
+    	return $this->belongsTo("\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role", \Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::FOREIGN_KEY);
     }
 }

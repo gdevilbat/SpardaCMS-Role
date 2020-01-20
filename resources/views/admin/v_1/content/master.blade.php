@@ -114,8 +114,8 @@
                                                                                        <input type="checkbox" class="checkbox" {{Route::current()->getController()->checkRole( $scope, $role->modules, $module->getKey()) ? "checked" : ""}}>
                                                                                         {{$scope}}
                                                                                         <input type="hidden" class="role" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][access_scope][{{$scope}}]">
-                                                                                        <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][role_id]" value="{{encrypt($role->getKey())}}">
-                                                                                        <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][module_id]" value="{{encrypt($module->getKey())}}">
+                                                                                        <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][{{\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::FOREIGN_KEY}}]" value="{{encrypt($role->getKey())}}">
+                                                                                        <input type="hidden" name="access[{{$loop->parent->parent->index}}][{{$loop->parent->index}}][{{\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module::FOREIGN_KEY}}]" value="{{encrypt($module->getKey())}}">
                                                                                         <span></span>
                                                                                 </label>
                                                                             @endforeach

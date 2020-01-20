@@ -148,12 +148,12 @@ class RoleController extends CoreController
         {
             foreach($role_user as $value)
             {
-                $role =  $this->access_role_m->where('role_id', decrypt($value['role_id']))->where('module_id', decrypt($value['module_id']))->first();
+                $role =  $this->access_role_m->where(\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::FOREIGN_KEY, decrypt($value[\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::FOREIGN_KEY]))->where(\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module::FOREIGN_KEY, decrypt($value[\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module::FOREIGN_KEY]))->first();
                 if(empty($role))
                     $role = new $this->access_role_m;
 
-                $role->role_id = decrypt($value['role_id']);
-                $role->module_id = decrypt($value['module_id']);
+                $role[\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::FOREIGN_KEY] = decrypt($value[\Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::FOREIGN_KEY]);
+                $role[\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module::FOREIGN_KEY] = decrypt($value[\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module::FOREIGN_KEY]);
                 $role->access_scope = $value['access_scope'];
                 if(!$role->save())
                 {
