@@ -31,7 +31,7 @@ class SingleBrandAuthentication implements \Gdevilbat\SpardaCMS\Modules\Role\Rep
 
 	    if(!empty($model))
 	    {
-	    	if(!empty(config('cms-role.exclude_permission_id.'.$module->slug)) && !in_array($value, config('cms-role.exclude_permission_id.'.$module->slug)))
+	    	if(empty(config('cms-role.exclude_permission_id.'.$module->slug)) || (!empty(config('cms-role.exclude_permission_id.'.$module->slug)) && !in_array($value, config('cms-role.exclude_permission_id.'.$module->slug))))
 	            return $scope || ($user->id == $model->created_by);
 	    }
 
