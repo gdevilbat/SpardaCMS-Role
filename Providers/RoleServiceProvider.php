@@ -38,7 +38,7 @@ class RoleServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
 
         $this->app->bind(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class, function($app){
-            $acl =  config('role.aclRepository');
+            $acl =  config('cms-role.aclRepository');
             return new $acl; 
         });
         
@@ -54,10 +54,10 @@ class RoleServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('role.php'),
+            __DIR__.'/../Config/config.php' => config_path('cms-role.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php', 'role'
+            __DIR__.'/../Config/config.php', 'cms-role'
         );
     }
 
