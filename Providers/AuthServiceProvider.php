@@ -9,6 +9,7 @@ use Gdevilbat\SpardaCMS\Modules\Role\Entities\RoleUser as RoleUser_m;
 
 use Schema;
 use Gate;
+use Config;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -64,7 +65,17 @@ class AuthServiceProvider extends ServiceProvider
        }
        
        Gate::define('super-access', function ($user){
-            $role_user = RoleUser_m::with('role')->where('user_id', $user->id)->first();
+
+        if(empty(Config::get('role_user.'.$user->id)))
+        {
+            $role_user =  RoleUser_m::with('role')->where('user_id', $user->id)->first();
+            Config::set('role_user.'.$user->id, $role_user);
+        }
+        else
+        {
+            $role_user = Config::get('role_user.'.$user->id);
+        }
+        
             if(empty($role_user))
                 abort(403, "User Doesn't Have Role");
 
