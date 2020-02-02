@@ -41,11 +41,15 @@ class SingleBrandAuthentication implements \Gdevilbat\SpardaCMS\Modules\Role\Rep
                                                             $query->where(Module_m::getTableName().'.'.Module_m::getPrimaryKey(), $module->getKey());
                                                         }]);
 
-            Config::set('role_access.'.$user->id.'.'.$module->slug, $role_access);
+
+            //Config::set('role_access.'.$user->id.'.'.$module->slug, $role_access);
         }
         else
         {
-            $role_access = Config::get('role_access.'.$user->id.'.'.$module->slug);
+            //$role_access = Config::get('role_access.'.$user->id.'.'.$module->slug);
+            $role_access = $role_user->role->load(['modules' => function($query) use ($module){
+                                                            $query->where(Module_m::getTableName().'.'.Module_m::getPrimaryKey(), $module->getKey());
+                                                        }]);
         }
 
 		$scope = $role_access->hasAccess($value, $module->slug, $modules);
