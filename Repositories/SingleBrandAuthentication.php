@@ -8,6 +8,7 @@ use Gdevilbat\SpardaCMS\Modules\Role\Entities\RoleUser as RoleUser_m;
 use Gdevilbat\SpardaCMS\Modules\Core\Entities\Module as Module_m;
 
 use Auth;
+use Config;
 
 /**
  * Class EloquentCoreRepository
@@ -18,16 +19,36 @@ class SingleBrandAuthentication implements \Gdevilbat\SpardaCMS\Modules\Role\Rep
 {
 	public function getAuthenticationRule(string $value, \Gdevilbat\SpardaCMS\Modules\Core\Entities\Module $module, \Illuminate\Database\Eloquent\Collection $modules, \Illuminate\Database\Eloquent\Model $model = null, \App\User $user): bool
 	{
-		$role_user = RoleUser_m::with(['role.modules' => function($query) use ($module){
-                                                        $query->where(Module_m::getTableName().'.'.Module_m::getPrimaryKey(), $module->getKey());
-                                                    }])
-                                                    ->where('user_id', $user->id)
-                                                    ->first();
+        if(empty(Config::get('role_user.'.$user->id)))
+        {
+            $role_user =  RoleUser_m::with('role')
+                                    ->where('user_id', $user->id)
+                                    ->first();
+            Config::set('role_user.'.$user->id, $role_user);
+        }
+        else
+        {
+            $role_user = Config::get('role_user.'.$user->id);
+        }
 
         if(empty($role_user))
             abort(403, "User Doesn't Have Role");
 
-		$scope = $role_user->role->hasAccess($value, $module->slug, $modules);
+
+        if(empty(Config::get('role_access.'.$user->id.'.'.$module->slug)))
+        {
+    		$role_access = $role_user->role->load(['modules' => function($query) use ($module){
+                                                            $query->where(Module_m::getTableName().'.'.Module_m::getPrimaryKey(), $module->getKey());
+                                                        }]);
+
+            Config::set('role_access.'.$user->id.'.'.$module->slug, $role_access);
+        }
+        else
+        {
+            $role_access = Config::get('role_access.'.$user->id.'.'.$module->slug);
+        }
+
+		$scope = $role_access->hasAccess($value, $module->slug, $modules);
 
 	    if(!empty($model))
 	    {
