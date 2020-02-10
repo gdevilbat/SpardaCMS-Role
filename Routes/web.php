@@ -29,6 +29,24 @@ Route::group(['prefix' => 'control', 'middleware' => 'core.menu'], function() {
 	        
 	        /*=====  End of Account CMS  ======*/
 		});
+
+		Route::group(['prefix' => 'group'], function() {
+	        /*=============================================
+	        =            Member CMS                       =
+	        =============================================*/
+	        
+			    Route::get('master', 'GroupController@index')->middleware('can:menu-role')->name('role.master');
+			    Route::get('form', 'GroupController@create')->name('role.create');
+			    Route::post('form', 'GroupController@store')->middleware('can:create-role')->name('role.store');
+			    Route::put('form', 'GroupController@store')->name('role.store');
+			    Route::delete('form', 'GroupController@destroy')->name('role.delete');
+
+			    Route::group(['prefix' => 'api'], function() {
+				    Route::get('master', 'GroupController@serviceMaster')->middleware('can:menu-role')->name('role.service-master');
+			    });
+	        
+	        /*=====  End of Member CMS  ======*/
+		});
         
 	});
 });
