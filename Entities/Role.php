@@ -15,6 +15,10 @@ class Role extends Model
 
     const FOREIGN_KEY = 'role_id';
 
+    const ROLE_SUPER_ADMIN = 'super-admin';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_PUBLIC = 'public';
+
     /**
      * Set the user's Slug.
      *
