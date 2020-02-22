@@ -52,24 +52,60 @@ class MultiBrandSingelRoleAuthentication implements \Gdevilbat\SpardaCMS\Modules
 
 		$scope = $role_access->hasAccess($value, $module->slug, $modules);
 
+
 	    if(!empty($model))
 	    {
+            try {
+                $group_auth = $model->load(['author.group.users' => function($query) use ($user){
+                                            $query->where(\Gdevilbat\SpardaCMS\Modules\Core\Entities\User::getTableName().'.id', $user->id);
+                                        }]);
+
+                $group_scope = !empty($group_auth->author->group->first()) && $group_auth->author->group->first()->users->count() > 0 ? true : false;
+
+            } catch (\Illuminate\Database\Eloquent\RelationNotFoundException $e) {
+                $group_scope = false;
+            }
+
+            if($role_access->slug == \Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::ROLE_SUPER_ADMIN)
+                $group_scope = true;
+
 	    	if(empty(config('cms-role.exclude_permission_id.'.$module->slug)) || (!empty(config('cms-role.exclude_permission_id.'.$module->slug)) && !in_array($value, config('cms-role.exclude_permission_id.'.$module->slug))))
-	            return $scope || ($user->id == $model->created_by);
+	            return ($scope && $group_scope) || ($user->id == $model->created_by);
+
+            return $scope && $group_scope;
 	    }
 
 	    return $scope;
 	}
 
-	public function getDataByCreatedUser(\Illuminate\Database\Eloquent\Builder $builder, \Illuminate\Database\Eloquent\Model $model): \Illuminate\Database\Eloquent\Builder
+	public function getDataByCreatedUser(\Illuminate\Database\Eloquent\Builder $builder, \Illuminate\Database\Eloquent\Model $model, string $authentication): \Illuminate\Database\Eloquent\Builder
     {
+        if(Auth::user()->can($authentication))
+        {
+            if(Auth::user()->can('super-access'))
+                return $builder;
+
+            if (Schema::hasColumn($model->getTableName(), 'created_by'))
+            {
+                $query = $builder->where(function($query) use ($model){
+                            $query->where($model->getTableName().'.created_by', Auth::id())
+                                ->orWhereHas('author.group.users', function($query){
+                                    $query->where(\Gdevilbat\SpardaCMS\Modules\Core\Entities\User::getTableName().'.id', Auth::id());
+                                });
+                        });
+            }
+            else
+            {
+                $query = $builder->whereRaw(0);
+            }
+
+            return $query;
+        }
+
     	if (Schema::hasColumn($model->getTableName(), 'created_by'))
         {
 	    	$query = $builder->where(function($query) use ($model){
-                        $query->where($model->getTableName().'.created_by', Auth::id())
-                            ->orWhereHas('author.group.users', function($query){
-                                $query->where(\Gdevilbat\SpardaCMS\Modules\Core\Entities\User::getTableName().'.id', Auth::id());
-                            });
+                        $query->where($model->getTableName().'.created_by', Auth::id());
                     });
         }
         else
