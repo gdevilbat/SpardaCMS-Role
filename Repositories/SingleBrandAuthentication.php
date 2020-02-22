@@ -63,8 +63,12 @@ class SingleBrandAuthentication implements \Gdevilbat\SpardaCMS\Modules\Role\Rep
 	    return $scope;
 	}
 
-	public function getDataByCreatedUser(\Illuminate\Database\Eloquent\Builder $builder, \Illuminate\Database\Eloquent\Model $model): \Illuminate\Database\Eloquent\Builder
+	public function getDataByCreatedUser(\Illuminate\Database\Eloquent\Builder $builder, \Illuminate\Database\Eloquent\Model $model, string $authentication): \Illuminate\Database\Eloquent\Builder
     {
+        if(Auth::user()->can($authentication))
+            return $builder;
+
+
     	if (Schema::hasColumn($model->getTableName(), 'created_by'))
         {
 	    	$query = $builder->where($model->getTableName().'.created_by', Auth::id());
