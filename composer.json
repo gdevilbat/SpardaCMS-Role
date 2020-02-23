@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "gdevilbat/sparda-cms-core-module": "^5.7.36"
+        "gdevilbat/sparda-cms-core-module": "^5.8"
     },
     "extra": {
         "laravel": {
