@@ -60,7 +60,7 @@ class MultiBrandSingelRoleAuthentication implements \Gdevilbat\SpardaCMS\Modules
                                             $query->where(\Gdevilbat\SpardaCMS\Modules\Core\Entities\User::getTableName().'.id', $user->id);
                                         }]);
 
-                $group_scope = !empty($group_auth->author->group->first()) && $group_auth->author->group->first()->users->count() > 0 ? true : false;
+                $group_scope = !empty($group_auth->author->group) && $group_auth->author->group->users->count() > 0 ? true : false;
 
             } catch (\Illuminate\Database\Eloquent\RelationNotFoundException $e) {
                 $group_scope = false;
