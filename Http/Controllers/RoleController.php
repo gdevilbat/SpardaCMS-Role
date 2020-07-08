@@ -33,7 +33,7 @@ class RoleController extends CoreController
      */
     public function index()
     {
-        $this->data['roles'] = $this->role_repository->with('modules')->all();
+        $this->data['roles'] = $this->role_repository->with('modules')->get();
         $this->data['modules'] = $this->module_repository->all();
         return view('role::admin.'.$this->data['theme_cms']->value.'.content.master', $this->data);
     }
