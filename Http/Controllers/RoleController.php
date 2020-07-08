@@ -170,7 +170,7 @@ class RoleController extends CoreController
         $modules = $modules->where(\Gdevilbat\SpardaCMS\Modules\Core\Entities\Module::getPrimaryKey(), $id);
         foreach ($modules as $module) 
         {
-            if(!array_key_exists($scope, json_decode($module->pivot->access_scope)))
+            if(!property_exists(json_decode($module->pivot->access_scope), $scope))
                 return false;
 
             return json_decode(json_decode($module->pivot->access_scope)->$scope);
