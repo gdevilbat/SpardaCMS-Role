@@ -87,7 +87,7 @@
                                 </a>
                             </div>
                         </div>
-                    @endcan
+                    @endif
 
                     <!--begin: Datatable -->
                     <form action="{{route('cms.role-scope.store')}}" method="post" id="form-role">
