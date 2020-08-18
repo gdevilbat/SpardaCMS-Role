@@ -83,6 +83,14 @@ class AuthServiceProvider extends ServiceProvider
        });
     }
 
+    public function register()
+    {
+        $this->app->bind(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class, function($app){
+            $acl =  config('cms-role.aclRepository');
+            return new $acl; 
+        });
+    }
+
     /**
      * Get the services provided by the provider.
      *

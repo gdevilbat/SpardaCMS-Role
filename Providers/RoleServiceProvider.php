@@ -36,12 +36,6 @@ class RoleServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
         $this->app->register(RouteServiceProvider::class);
-
-        $this->app->bind(\Gdevilbat\SpardaCMS\Modules\Role\Repositories\Contract\AuthenticationRepository::class, function($app){
-            $acl =  config('cms-role.aclRepository');
-            return new $acl; 
-        });
-        
         $this->app->register(AuthServiceProvider::class);
 
     }
