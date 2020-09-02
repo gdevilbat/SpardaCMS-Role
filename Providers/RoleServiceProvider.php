@@ -40,7 +40,7 @@ class RoleServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
 
         /* RegisterAuth On Dashboard */
-            if(Request::segment(1) == 'control')
+            if(Request::segment(1) == 'control' || \App::environment('testing'))
                 $this->app->register(AuthServiceProvider::class);
         
 
