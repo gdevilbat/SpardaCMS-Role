@@ -10,6 +10,7 @@ use Gdevilbat\SpardaCMS\Modules\Role\Entities\RoleUser as RoleUser_m;
 use Schema;
 use Gate;
 use Config;
+use Request;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -36,7 +37,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerAllModule();
+        if(Request::segment(1) == 'control' || \App::environment('testing'))
+            $this->registerAllModule();
 
         //
     }

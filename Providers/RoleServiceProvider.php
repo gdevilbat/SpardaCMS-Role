@@ -5,8 +5,6 @@ namespace Gdevilbat\SpardaCMS\Modules\Role\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
-use Request;
-
 class RoleServiceProvider extends ServiceProvider
 {
     /**
@@ -38,12 +36,7 @@ class RoleServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
         $this->app->register(RouteServiceProvider::class);
-
-        /* RegisterAuth On Dashboard */
-            if(Request::segment(1) == 'control' || \App::environment('testing'))
-                $this->app->register(AuthServiceProvider::class);
-        
-
+        $this->app->register(AuthServiceProvider::class);
     }
 
     /**
