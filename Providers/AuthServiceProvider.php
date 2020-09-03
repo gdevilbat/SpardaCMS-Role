@@ -37,10 +37,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if(Request::segment(1) == 'control' || \App::environment('testing'))
+        if(Request::segment(1) == 'control' || Request::segment(1) == 'file-manager' || \App::environment('testing'))
             $this->registerAllModule();
 
-        //
     }
 
     public function registerAllModule()
