@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use DB;
 
+use Gdevilbat\SpardaCMS\Modules\Role\Entities\Role;
+
 class RoleTableSeeder extends Seeder
 {
     /**
@@ -18,19 +20,22 @@ class RoleTableSeeder extends Seeder
     {
         Model::unguard();
 
-        DB::table('role')->insert([
+        Role::firstOrCreate(
+            ['slug' => 'super-admin'],
             [
                 'name' => 'Super Admin',
-                'slug' => 'super-admin',
                 'created_by' => 1,
                 'modified_by' => 1,
             ],
+        );
+
+        Role::firstOrCreate(
+            ['slug' => 'public'],
             [
                 'name' => 'Public',
-                'slug' => 'public',
                 'created_by' => 1,
                 'modified_by' => 1,
             ],
-        ]);
+        );
     }
 }

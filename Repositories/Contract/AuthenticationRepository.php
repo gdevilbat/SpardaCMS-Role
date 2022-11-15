@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 interface AuthenticationRepository
 {
-	public function getAuthenticationRule(string $value, \Gdevilbat\SpardaCMS\Modules\Core\Entities\Module $module, \Illuminate\Database\Eloquent\Collection $modules, \Illuminate\Database\Eloquent\Model $model = null, \App\User $user): bool;
+	public function getAuthenticationRule(string $value, \Gdevilbat\SpardaCMS\Modules\Core\Entities\Module $module, \Illuminate\Database\Eloquent\Collection $modules, \Illuminate\Database\Eloquent\Model $model = null, \App\Models\User $user): bool;
 
 	public function getDataByCreatedUser(\Illuminate\Database\Eloquent\Builder $builder, \Illuminate\Database\Eloquent\Model $model, string $authentication): \Illuminate\Database\Eloquent\Builder;
 }

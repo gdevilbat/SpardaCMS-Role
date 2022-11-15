@@ -18,7 +18,7 @@ class RoleTest extends DuskTestCase
      */
     public function testCreateRole()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
         $faker = \Faker\Factory::create();
 
         $this->browse(function (Browser $browser) use ($user, $faker) {
@@ -44,7 +44,7 @@ class RoleTest extends DuskTestCase
      */
     public function testEditRole()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $this->browse(function (Browser $browser) use ($user) {
 
@@ -68,7 +68,7 @@ class RoleTest extends DuskTestCase
      */
     public function testDeleteRole()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $faker = \Faker\Factory::create();
 
@@ -108,7 +108,7 @@ class RoleTest extends DuskTestCase
      */
     public function testSetRole()
     {
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $this->browse(function (Browser $browser) use ($user) {
 

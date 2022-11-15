@@ -99,7 +99,7 @@
                                             <th style="width: 10px">No.</th>
                                             <th>Role Name</th>
                                             @foreach($modules as $module)
-                                                <th><center>{{title_case($module->slug)}}</center></th>
+                                                <th><center>{{\Str::title($module->slug)}}</center></th>
                                             @endforeach
                                             <th style="width: 50px; vertical-align: middle;">Action</th>
                                         </tr>

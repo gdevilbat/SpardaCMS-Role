@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use DB;
 
+use Gdevilbat\SpardaCMS\Modules\Role\Entities\RoleUser;
+
 class RoleUsersTableSeeder extends Seeder
 {
     /**
@@ -18,11 +20,11 @@ class RoleUsersTableSeeder extends Seeder
     {
         Model::unguard();
 
-        DB::table('role_users')->insert([
+        RoleUser::firstOrCreate(
+            ['user_id' => '1'],
             [
-                'user_id' => '1',
                 'role_id' => '1',
             ],
-        ]);
+        );
     }
 }

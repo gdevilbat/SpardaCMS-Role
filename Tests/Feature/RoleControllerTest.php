@@ -21,7 +21,7 @@ class RoleControllerTest extends TestCase
         $response->assertStatus(302)
         		 ->assertRedirect(action('\Gdevilbat\SpardaCMS\Modules\Core\Http\Controllers\Auth\LoginController@showLoginForm')); // Return Not Valid, User Not Login
 
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $response = $this->actingAs($user)
         				 ->get(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@index'))
@@ -35,7 +35,7 @@ class RoleControllerTest extends TestCase
         $response->assertStatus(302)
                  ->assertRedirect(action('\Gdevilbat\SpardaCMS\Modules\Core\Http\Controllers\Auth\LoginController@showLoginForm')); // Return Not Valid, User Not Login
 
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $response = $this->actingAs($user)
         				 ->get(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create'))
@@ -49,7 +49,7 @@ class RoleControllerTest extends TestCase
         $response->assertStatus(302)
                  ->assertRedirect(action('\Gdevilbat\SpardaCMS\Modules\Core\Http\Controllers\Auth\LoginController@showLoginForm')); //Return Not Valid, User Not Login
 
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $response = $this->actingAs($user)
         				 ->from(action('\Gdevilbat\SpardaCMS\Modules\Role\Http\Controllers\RoleController@create'))
@@ -86,7 +86,7 @@ class RoleControllerTest extends TestCase
                  ->assertRedirect(action('\Gdevilbat\SpardaCMS\Modules\Core\Http\Controllers\Auth\LoginController@showLoginForm')); //Return Not Valid, User Not Login
 
 
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
         $role = \Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::latest()->first();
 
         $response = $this->actingAs($user)
@@ -113,7 +113,7 @@ class RoleControllerTest extends TestCase
                  ->assertRedirect(action('\Gdevilbat\SpardaCMS\Modules\Core\Http\Controllers\Auth\LoginController@showLoginForm')); //Return Not Valid, User Not Login
 
 
-        $user = \App\User::find(1);
+        $user = \App\Models\User::find(1);
 
         $role = \Gdevilbat\SpardaCMS\Modules\Role\Entities\Role::latest()->first();
 
