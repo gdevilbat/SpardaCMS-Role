@@ -19,6 +19,11 @@ class Role extends Model
     const ROLE_ADMIN = 'admin';
     const ROLE_PUBLIC = 'public';
 
+    protected $appends = [
+        'primary_key',
+        'encrypted_id',
+    ];
+
     /**
      * Set the user's Slug.
      *
@@ -28,6 +33,16 @@ class Role extends Model
     public function setSlugAttribute($value)
     {
         $this->attributes['slug'] = Str::slug($value, '-');
+    }
+
+    public function getPrimaryKeyAttribute()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    public function getEncryptedIdAttribute()
+    {
+        return encrypt($this->getKey());
     }
 
     public function modules()
