@@ -38,6 +38,57 @@ class RoleController extends CoreController
         return view('role::admin.'.$this->data['theme_cms']->value.'.content.master', $this->data);
     }
 
+    public function data(Request $request)
+    {
+        $roles = $this->role_repository->all();
+        $modules = $this->module_repository->all();
+
+        $self = $this;
+
+        $roles->each(function ($role) use ($self, $modules) {
+            $role->permissions = [
+                'read' => Auth::user()->can('read-role', $role),
+                'update' => Auth::user()->can('update-role', $role),
+                'delete' => Auth::user()->can('delete-role', $role),
+            ];
+
+            $permissions = [];
+
+            foreach ($modules as $key => $module) {
+                if(!is_array($module->scope))
+                    continue;
+
+                $access = [];
+
+                foreach ($module->scope as $key => $scope) {
+                    if($self->checkRole($scope, $role->modules, $module->getKey())){
+                        $access[$scope] = true;
+                    }else{
+                        $access[$scope] = false;
+                    }
+                }
+
+                $permissions[$module->slug] = $access;
+            }
+
+            $role->access = $permissions;
+        });
+
+        $modules->each(function ($module) {
+            $module->permissions = [
+                'permission' => Auth::user()->can('permission-'.$module->slug,),
+            ];
+        });
+
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'roles' => $roles,
+                'modules' => $modules
+            ]
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      * @return Response
@@ -79,11 +130,7 @@ class RoleController extends CoreController
             ]);
         }
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+        $validator->validate();
 
         if($request->isMethod('POST'))
         {
@@ -116,22 +163,54 @@ class RoleController extends CoreController
         {
             if($request->isMethod('POST'))
             {
-                return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Successfully Add Role!'));
+                if($request->ajax()){
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Successfully Add Role!',
+                        'code' => 200
+                    ]);
+                }else{
+                    return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Successfully Add Role!'));
+                }
             }
             else
             {
-                return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Successfully Update Role!'));
+                if($request->ajax()){
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Successfully Update Role!',
+                        'code' => 200
+                    ]);
+                }else{
+                    return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Successfully Update Role!'));
+                }
             }
         }
         else
         {
             if($request->isMethod('POST'))
             {
-                return redirect()->back()->with('global_message', array('status' => 400, 'message' => 'Failed To Add Role!'));
+                if($request->ajax()){
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Failed To Add Role!',
+                        'code' => 400
+                    ]);
+                }else{
+                    return redirect()->back()->with('global_message', array('status' => 400, 'message' => 'Failed To Add Role!'));
+                }
             }
             else
             {
-                return redirect()->back()->with('global_message', array('status' => 400, 'message' => 'Failed To Update Role!'));
+                if($request->ajax()){
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Failed To Update Role!',
+                        'code' => 400
+                    ]);
+                }else{
+                    return redirect()->back()->with('global_message', array('status' => 400, 'message' => 'Failed To Update Role!'));
+                }
             }
         }
     }
@@ -157,12 +236,29 @@ class RoleController extends CoreController
                 $role->access_scope = $value['access_scope'];
                 if(!$role->save())
                 {
-                    return redirect(route('cms.role.master'))->with('global_message', array('status' => 400, 'message' => 'Failed To Update Role Provider!'));
+                    if($request->ajax()){
+                        return response()->json([
+                            'status' => true,
+                            'message' => 'Failed To Update Role Provider!',
+                            'code' => 400
+                        ]);
+                    }else{
+                        return redirect(route('cms.role.master'))->with('global_message', array('status' => 400, 'message' => 'Failed To Update Role Provider!'));
+                    }
                 }
             }
         }
 
-        return redirect(route('cms.role.master'))->with('global_message', array('status' => 200, 'message' => 'Successfully To Update Role Provider!'));
+        if($request->ajax()){
+            return response()->json([
+                'status' => true,
+                'message' => 'Successfully To Update Role Provider!',
+                'code' => 200
+            ]);
+        }else{
+            return redirect(route('cms.role.master'))->with('global_message', array('status' => 200, 'message' => 'Successfully To Update Role Provider!'));
+        }
+
     }
 
     public function checkRole($scope ,$modules, $id)
@@ -182,9 +278,15 @@ class RoleController extends CoreController
      * @param int $id
      * @return Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        return view('role::show');
+        $role = $this->role_repository->find(decrypt($request->code));
+        $this->authorize('update-role', $role);
+
+        return response()->json([
+            'status' => true,
+            'data' => $role
+        ]);
     }
 
     /**
@@ -222,11 +324,27 @@ class RoleController extends CoreController
         try {
             if($query->delete())
             {
-                return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Successfully Delete Role!'));
+                if($request->ajax()){
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Successfully Delete Role!',
+                        'code' => 200
+                    ]);
+                }else{
+                    return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Successfully Delete Role!'));
+                }
             }
             
         } catch (\Exception $e) {
-            return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Failed Delete Role, It\'s Has Been Used!'));
+            if($request->ajax()){
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Failed Delete Role, It\'s Has Been Used!',
+                    'code' => 400
+                ]);
+            }else{
+                return redirect(route('cms.role.master'))->with('global_message', array('status' => 200,'message' => 'Failed Delete Role, It\'s Has Been Used!'));
+            }
         }
     }
 }

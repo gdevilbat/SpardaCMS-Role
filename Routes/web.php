@@ -11,11 +11,12 @@
 |
 */
 
-Route::group(['prefix' => 'control', 'middleware' => 'core.menu'], function() {
+Route::group(['prefix' => 'control', 'middleware' => 'core.auth'], function() {
     
-	Route::group(['middleware' => 'core.auth'], function() {
+	Route::group(['prefix' => 'role'], function() {
 
-		Route::group(['prefix' => 'role'], function() {
+		Route::group(['middleware' => 'core.menu'], function() {
+
 	        /*=============================================
 	        =            Account CMS            =
 	        =============================================*/
@@ -29,6 +30,8 @@ Route::group(['prefix' => 'control', 'middleware' => 'core.menu'], function() {
 	        
 	        /*=====  End of Account CMS  ======*/
 		});
-        
+
+		Route::post('data', 'RoleController@data')->middleware('can:menu-role');
+        Route::post('show', 'RoleController@show');
 	});
 });

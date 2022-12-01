@@ -1,5 +1,5 @@
-const ModuleMaster = () => import('../components/Master.vue')
-const ModuleForm = () => import('../components/Form.vue')
+const RoleMaster = () => import('../components/Master.vue')
+const RoleForm = () => import('../components/Form.vue')
 
 export default class routes{
     constructor(Meta) {
@@ -12,18 +12,18 @@ export default class routes{
                 path: 'role/master',
                 name: 'role-master',
                 components : {
-                    content : ModuleMaster,
+                    content : RoleMaster,
                 },
                 props: { content: true },
-                meta: {...this.meta, title_dashboard: 'Module'}
+                meta: {...this.meta, title_dashboard: 'Role'}
             },
             {
                 path: 'role/form',
                 name: 'role-form',
                 components : {
-                    content : ModuleForm,
+                    content : RoleForm,
                 },
-                meta: {...this.meta, title_dashboard: 'Module'}
+                meta: {...this.meta, title_dashboard: 'Role'}
             },
         ]
     }

@@ -117,7 +117,7 @@
                                             <li class="m-nav__separator">-</li>
                                             <li class="m-nav__item">
                                                 <a href="" class="m-nav__link">
-                                                    <span class="m-nav__link-text">Module</span>
+                                                    <span class="m-nav__link-text">Role</span>
                                                 </a>
                                             </li>
                                         </ul>`;
@@ -128,7 +128,7 @@
                 self.loading = true;
                 axios({
                         method: "post",
-                        url: '/control/module/show',
+                        url: '/control/role/show',
                         data: {'code': this.$route.query.code}
                     })
                     .then(response => {
@@ -174,7 +174,7 @@
                 self.loading = true;
                 axios({
                     method: "post",
-                    url: "/control/module/form",
+                    url: "/control/role/form",
                     data: formData,
                 })
                 .then(function (response) {
@@ -184,7 +184,7 @@
 
                     if(response.data.status){
                         self.$router.push({
-                            name: 'module-master',
+                            name: 'role-master',
                             params: { updated: response.data }
                         })
                     }else{
